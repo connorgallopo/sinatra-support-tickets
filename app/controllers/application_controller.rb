@@ -13,7 +13,6 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/login' do
-    binding.pry
     redirect to '/support_tickets' if logged_in?
     erb :'/users/login'
   end
@@ -38,6 +37,14 @@ class ApplicationController < Sinatra::Base
     @user.role = 'user'
     @user.save
     session[:user_id] = @user.id
+    redirect to '/support_tickets'
+  end
+
+  post '/tickets/new' do
+    @user = current_user
+    @ticket = SupportTicket.create(params)
+    @ticket.user = @user
+    @ticket.save
     redirect to '/support_tickets'
   end
 

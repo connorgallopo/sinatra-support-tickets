@@ -1,24 +1,31 @@
-<% binding.pry %>
 <%if @user.role == "admin" %>
   <h2>
     All Open Tickets:
   </h2>
-  <a href="/support_tickets/new">Open a Support Ticket</a>
+  <a href="/support_tickets/new">Open a Support Ticket</a><br>
   <% SupportTicket.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
-    <a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
-    <a href="/tickets/<%=@ticket.id%>/delete" id="Delete Ticket">Delete Ticket</a>
+    <a href="/tickets/<%=ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
+    <form style="float: right" method="post" action="/tickets/<%=ticket.id%>/delete">
+      <input name="_method" type="hidden" value="delete">
+      <input type="submit" value="Delete Ticket">
+    </form>
   <%end%>
 <%elsif @user.role = "user" %>
   <h2>
     Your Open Tickets:
   </h2>
-  <a href="/support_tickets/new">Open a Support Ticket</a>
+  <a href="/support_tickets/new">Open a Support Ticket</a><br>
   <% SupportTicket.all.each do |ticket| %>
-    <h4><%=ticket.subject%></h4>
-    <p><%=ticket.body%></p>
-    <a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
-    <a href="/tickets/<%=@ticket.id%>/delete" id="Delete Ticket">Delete Ticket</a>
+    <% if (ticket.user.role == "user" && ticket.user == current_user)%>
+      <h4><%=ticket.subject%></h4>
+      <p><%=ticket.body%></p>
+      <a href="/tickets/<%=ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
+      <form style="float: right" method="post" action="/tickets/<%=ticket.id%>/delete">
+        <input name="_method" type="hidden" value="delete">
+        <input type="submit" value="Delete Ticket">
+      </form>
+    <%end%>
   <%end%>
 <%end%>
