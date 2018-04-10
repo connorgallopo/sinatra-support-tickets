@@ -3,6 +3,7 @@
   <h2>
     All Open Tickets:
   </h2>
+  <a href="/support_tickets/new">Open a Support Ticket</a>
   <% SupportTicket.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
@@ -13,6 +14,7 @@
   <h2>
     Your Open Tickets:
   </h2>
+  <a href="/support_tickets/new">Open a Support Ticket</a>
   <% SupportTicket.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
