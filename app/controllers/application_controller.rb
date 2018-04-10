@@ -18,6 +18,10 @@ class ApplicationController < Sinatra::Base
     erb :'/users/new_user'
   end
 
+  get '/tickets/new' do
+    erb :'/tickets/new_ticket'
+  end
+
   post '/users/new' do
 
   end
