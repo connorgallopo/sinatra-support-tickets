@@ -5,6 +5,8 @@
   <% Tickets.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
+    <a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
+    <a href="/tickets/<%=@ticket.id%>/delete" id="Delete Ticket">Delete Ticket</a>
   <%end%>
 <%elsif @user.role = "user" %>
   <h2>
@@ -13,5 +15,7 @@
   <% Tickets.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
+    <a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
+    <a href="/tickets/<%=@ticket.id%>/delete" id="Delete Ticket">Delete Ticket</a>
   <%end%>
 <%end%>
