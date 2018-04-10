@@ -22,6 +22,7 @@ class ApplicationController < Sinatra::Base
 
   get '/support_tickets' do
     redirect to '/login' if !logged_in?
+    @user = current_user
     erb :'/tickets/tickets'
   end
 
@@ -33,6 +34,16 @@ class ApplicationController < Sinatra::Base
     @user = User.create(params)
     session[:user_id] = @user.id
     redirect to '/support_tickets'
+  end
+
+  post '/users/login' do
+    @user = User.find_by(email: params['email'])
+    if @user && @user.authenticate(params['password'])
+      session[:user_id] = @user.id
+      redirect '/support_tickets'
+    else
+      redirect to '/login'
+    end
   end
 
   def current_user
