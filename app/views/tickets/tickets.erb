@@ -1,8 +1,9 @@
+<% binding.pry %>
 <%if @user.role == "admin" %>
   <h2>
     All Open Tickets:
   </h2>
-  <% Tickets.all.each do |ticket| %>
+  <% SupportTicket.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
     <a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
@@ -12,7 +13,7 @@
   <h2>
     Your Open Tickets:
   </h2>
-  <% Tickets.all.each do |ticket| %>
+  <% SupportTicket.all.each do |ticket| %>
     <h4><%=ticket.subject%></h4>
     <p><%=ticket.body%></p>
     <a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>

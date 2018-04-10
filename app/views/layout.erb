@@ -16,6 +16,9 @@
 <body>
   <div class="wrapper">
     <h1> Sinatra Support Tickets </h1>
+    <% if logged_in? %>
+    <a style="float: right" href="/logout">Logout</a>
+    <%end%>
     <br>
     <br>
 

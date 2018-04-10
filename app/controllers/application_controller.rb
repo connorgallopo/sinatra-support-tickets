@@ -4,6 +4,8 @@ class ApplicationController < Sinatra::Base
   configure do
     set :public_folder, 'public'
     set :views, 'app/views'
+    enable :sessions unless test?
+    set :session_secret, 'secret'
   end
 
   get '/' do
@@ -11,6 +13,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/login' do
+    binding.pry
     redirect to '/support_tickets' if logged_in?
     erb :'/users/login'
   end
@@ -36,11 +39,13 @@ class ApplicationController < Sinatra::Base
     redirect to '/support_tickets'
   end
 
-  post '/users/login' do
+  post '/login' do
     @user = User.find_by(email: params['email'])
+    binding.pry
     if @user && @user.authenticate(params['password'])
       session[:user_id] = @user.id
       redirect '/support_tickets'
+      binding.pry
     else
       redirect to '/login'
     end

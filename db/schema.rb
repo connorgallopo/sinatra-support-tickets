@@ -15,13 +15,15 @@ ActiveRecord::Schema.define(version: 20180410133012) do
 
   create_table "support_tickets", force: :cascade do |t|
     t.string  "subject"
-    t.string  "content"
+    t.string  "body"
+    t.integer "status"
     t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
-    t.string "password"
+    t.string "role"
+    t.string "password_digest"
   end
 
 end
