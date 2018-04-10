@@ -82,7 +82,7 @@ class ApplicationController < Sinatra::Base
       @ticket = SupportTicket.find_by(id: params[:id])
       if @user.role == "admin" || @ticket.user == current_user
         @ticket.delete
-        redirect to '/tickets'
+        redirect to '/support_tickets'
       end
     else
       redirect to '/login'
