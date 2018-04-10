@@ -76,6 +76,19 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  delete '/tickets/:id/delete' do
+    if logged_in?
+      @user = current_user
+      @ticket = SupportTicket.find_by(id: params[:id])
+      if @user.role == "admin" || @ticket.user == current_user
+        @ticket.delete
+        redirect to '/tickets'
+      end
+    else
+      redirect to '/login'
+    end
+  end
+
   get '/logout' do
     session.clear if logged_in?
     redirect to '/login'
