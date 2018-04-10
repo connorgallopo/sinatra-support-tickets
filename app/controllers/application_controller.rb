@@ -17,4 +17,16 @@ class ApplicationController < Sinatra::Base
   get '/users/new' do
     erb :'/users/new_user'
   end
+
+  post '/users/new' do
+
+  end
+
+  def current_user
+    User.find_by(id: session[:user_id])
+  end
+
+  def logged_in?
+    current_user ? true : false
+  end
 end
