@@ -101,4 +101,8 @@ class ApplicationController < Sinatra::Base
   def logged_in?
     current_user ? true : false
   end
+
+  def valid_email?(email)
+    /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i === email
+  end
 end

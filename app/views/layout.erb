@@ -15,6 +15,9 @@
 </head>
 <body>
   <div class="wrapper">
+    <% if flash.has?(:message) %>
+      <%= flash[:message] %>
+    <% end %>
     <h1> Sinatra Support Tickets </h1>
     <% if logged_in? %>
     <a style="float: right" href="/logout">Logout</a>
