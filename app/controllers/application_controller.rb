@@ -32,6 +32,18 @@ class ApplicationController < Sinatra::Base
     erb :'/tickets/new_ticket'
   end
 
+  get '/tickets/:id/edit' do
+    if logged_in?
+      @ticket = SupportTicket.find_by(id: params[:id])
+      if @ticket.user.role == "admin" || @ticket.user == current_user
+        erb :'/tickets/show'
+      end
+    else
+      redirect to '/login'
+    end
+  end
+
+
   post '/users/new' do
     @user = User.create(params)
     @user.role = 'user'

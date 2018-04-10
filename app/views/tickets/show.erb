@@ -1,0 +1,9 @@
+<h4>Editing Support Ticket</h4>
+<br>
+<form method="POST" action="/tickets/<%=@ticket.id%>/edit">
+  Subject:<br>
+  <input type="text" name="subject" value="<%=@ticket.subject%>"><br><br>
+  Issue:<br>
+  <textarea name="body" value="<%=@ticket.body%> rows="8" cols="80"></textarea><br>
+  <input type="submit" value="Update Ticket">
+</form>
