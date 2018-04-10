@@ -1,6 +1,8 @@
 require './config/environment'
+require 'rack-flash'
 
 class ApplicationController < Sinatra::Base
+  use Rack::Flash
   configure do
     set :public_folder, 'public'
     set :views, 'app/views'
@@ -40,6 +42,7 @@ class ApplicationController < Sinatra::Base
         erb :'/tickets/show'
       end
     else
+      flash[:error] = "You must be logged in to do that."
       redirect to '/login'
     end
   end
@@ -47,15 +50,21 @@ class ApplicationController < Sinatra::Base
   post '/tickets/:id/edit' do
     @ticket = SupportTicket.find_by(id: params[:id])
     @ticket.update(subject: params["subject"], body: params["body"])
+    flash[:message] = "Ticket sucessfully edited."
     redirect to '/support_tickets'
   end
 
   post '/users/new' do
-    @user = User.create(params)
-    @user.role = 'user'
-    @user.save
-    session[:user_id] = @user.id
-    redirect to '/support_tickets'
+    if valid_email?(params["email"])
+      @user = User.create(params)
+      @user.role = 'user'
+      @user.save
+      session[:user_id] = @user.id
+      redirect to '/support_tickets'
+    else
+      flash[:error] = "Please enter a valid email address."
+      redirect to '/users/new'
+    end
   end
 
   post '/tickets/new' do
@@ -63,6 +72,7 @@ class ApplicationController < Sinatra::Base
     @ticket = SupportTicket.create(params)
     @ticket.user = @user
     @ticket.save
+    flash[:message] = "Ticket sucessfully created."
     redirect to '/support_tickets'
   end
 
@@ -82,15 +92,18 @@ class ApplicationController < Sinatra::Base
       @ticket = SupportTicket.find_by(id: params[:id])
       if @user.role == "admin" || @ticket.user == current_user
         @ticket.delete
+        flash[:message] = "Ticket Deleted."
         redirect to '/support_tickets'
       end
     else
+      flash[:error] = "You must be logged in to do that."
       redirect to '/login'
     end
   end
 
   get '/logout' do
     session.clear if logged_in?
+    flash[:message] = "Logged Out"
     redirect to '/login'
   end
 

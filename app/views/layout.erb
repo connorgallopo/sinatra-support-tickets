@@ -16,7 +16,10 @@
 <body>
   <div class="wrapper">
     <% if flash.has?(:message) %>
-      <%= flash[:message] %>
+      <p style="text-align: center"><%= flash[:message] %> </p>
+    <% end %>
+    <% if flash.has?(:error) %>
+      <p style="text-align: center; color: red"><%= flash[:error] %> </p>
     <% end %>
     <h1> Sinatra Support Tickets </h1>
     <% if logged_in? %>
