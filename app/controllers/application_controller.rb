@@ -44,6 +44,11 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  post '/tickets/:id/edit' do
+    @ticket = SupportTicket.find_by(id: params[:id])
+    @ticket.update(subject: params["subject"], body: params["body"])
+    redirect to '/support_tickets'
+  end
 
   post '/users/new' do
     @user = User.create(params)
