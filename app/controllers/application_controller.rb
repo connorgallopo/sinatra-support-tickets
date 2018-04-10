@@ -34,8 +34,9 @@ class ApplicationController < Sinatra::Base
 
   get '/tickets/:id/edit' do
     if logged_in?
+      @user = current_user
       @ticket = SupportTicket.find_by(id: params[:id])
-      if @ticket.user.role == "admin" || @ticket.user == current_user
+      if @user.role == "admin" || @ticket.user == current_user
         erb :'/tickets/show'
       end
     else
