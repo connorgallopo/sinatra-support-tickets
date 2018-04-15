@@ -31,6 +31,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/support_tickets/new' do
+    redirect to '/login' if !logged_in?
     erb :'/tickets/new_ticket'
   end
 
@@ -68,12 +69,17 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/tickets/new' do
-    @user = current_user
-    @ticket = SupportTicket.create(params)
-    @ticket.user = @user
-    @ticket.save
-    flash[:message] = "Ticket sucessfully created."
-    redirect to '/support_tickets'
+    if (params["subject"] != "" && params["body"] != "")
+      @user = current_user
+      @ticket = SupportTicket.create(params)
+      @ticket.user = @user
+      @ticket.save
+      flash[:message] = "Ticket sucessfully created."
+      redirect to '/support_tickets'
+    else
+      flash[:error] = "Both Fields must be filled out"
+      redirect to "/support_tickets/new"
+    end
   end
 
   post '/login' do
