@@ -69,15 +69,21 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/users/new' do
-    if valid_email?(params['email'])
-      @user = User.create(params)
-      @user.role = 'user'
-      @user.save
-      session[:user_id] = @user.id
-      redirect to '/support_tickets'
+    @user = User.find_by(email: params['email'])
+    if @user.nil?
+      if valid_email?(params['email'])
+        @user = User.create(params)
+        @user.role = 'user'
+        @user.save
+        session[:user_id] = @user.id
+        redirect to '/support_tickets'
+      else
+        flash[:error] = 'Please enter a valid email address.'
+        redirect to '/users/new'
+      end
     else
-      flash[:error] = 'Please enter a valid email address.'
-      redirect to '/users/new'
+      flash[:error] = 'Account already exists, please Log In.'
+      redirect to '/login'
     end
   end
 

@@ -6,7 +6,7 @@
   <br>
   <% SupportTicket.all.each do |ticket| %>
     <h3><%=ticket.user.email%></h4>
-    <h4 style="padding-left: 18px"><%=ticket.subject%></h4>
+    <h4 style="padding-left: 18px"><a href="/support_tickets/<%=ticket.id%>"><%=ticket.subject%></a></h4>
     <p style="padding-left: 18px"><%=ticket.body%></p>
     <a href="/tickets/<%=ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
     <form style="float: right" method="post" action="/tickets/<%=ticket.id%>/delete">
