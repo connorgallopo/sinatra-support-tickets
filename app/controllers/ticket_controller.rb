@@ -19,24 +19,30 @@ class TicketController < ApplicationController
       @ticket = SupportTicket.find_by(id: params[:id])
       if @user.role == 'admin' || @ticket.user == current_user
         erb :'/tickets/show'
+      else
+        flash[:error] = 'ACCESS DENIED'
+        redirect to '/support_tickets'
       end
     else
+      redirect to '/'
       flash[:error] = 'ACCESS DENIED'
-      redirect to '/support_tickets'
     end
   end
 
   get '/support_tickets/:id/edit' do
-  @user = current_user
-    @ticket = SupportTicket.find_by(id: params[:id])
-    binding.pry
-    if @user.role == 'admin' || @ticket.user == current_user
-      binding.pry
-      erb :'/tickets/edit'
-  else
-    flash[:error] = 'ACCESS DENIED'
-    redirect to '/login'
-  end
+    if logged_in?
+      @user = current_user
+      @ticket = SupportTicket.find_by(id: params[:id])
+      if @user.role == 'admin' || @ticket.user == current_user
+        erb :'/tickets/edit'
+      else
+        flash[:error] = 'ACCESS DENIED'
+        redirect to '/login'
+      end
+    else
+      redirect to '/'
+      flash[:error] = 'ACCESS DENIED'
+    end
   end
 
   patch '/tickets/:id/edit' do
@@ -46,42 +52,40 @@ class TicketController < ApplicationController
     redirect to '/support_tickets'
   end
 
+  post '/tickets/new' do
+    if params['subject'] != '' && params['body'] != ''
+      @user = current_user
+      @ticket = SupportTicket.create(params)
+      @ticket.user = @user
+      @ticket.save
+      flash[:message] = 'Ticket sucessfully created.'
+      redirect to '/support_tickets'
+    else
+      flash[:error] = 'Both Fields must be filled out'
+      redirect to '/support_tickets/new'
+    end
+  end
 
-    post '/tickets/new' do
-      if params['subject'] != '' && params['body'] != ''
-        @user = current_user
-        @ticket = SupportTicket.create(params)
-        @ticket.user = @user
-        @ticket.save
-        flash[:message] = 'Ticket sucessfully created.'
+  delete '/tickets/:id/delete' do
+    if logged_in?
+      @user = current_user
+      @ticket = SupportTicket.find_by(id: params[:id])
+      if @user.role == 'admin' || @ticket.user == current_user
+        @ticket.delete
+        flash[:message] = 'Ticket Deleted.'
         redirect to '/support_tickets'
-      else
-        flash[:error] = 'Both Fields must be filled out'
-        redirect to '/support_tickets/new'
       end
+    else
+      flash[:error] = 'You must be logged in to do that.'
+      redirect to '/login'
     end
+  end
 
-    delete '/tickets/:id/delete' do
-      if logged_in?
-        @user = current_user
-        @ticket = SupportTicket.find_by(id: params[:id])
-        if @user.role == 'admin' || @ticket.user == current_user
-          @ticket.delete
-          flash[:message] = 'Ticket Deleted.'
-          redirect to '/support_tickets'
-        end
-      else
-        flash[:error] = 'You must be logged in to do that.'
-        redirect to '/login'
-      end
-    end
+  def current_user
+    User.find_by(id: session[:user_id])
+  end
 
-    def current_user
-      User.find_by(id: session[:user_id])
-    end
-
-    def logged_in?
-      current_user ? true : false
-    end
-
+  def logged_in?
+    current_user ? true : false
+  end
 end
