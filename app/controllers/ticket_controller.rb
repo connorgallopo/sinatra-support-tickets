@@ -3,13 +3,13 @@ class TicketController < ApplicationController
   use Rack::Flash
 
   get '/support_tickets' do
-    redirect to '/login' unless logged_in?
+    redirect to '/' unless logged_in?
     @user = current_user
     erb :'/tickets/tickets'
   end
 
   get '/support_tickets/new' do
-    redirect to '/login' unless logged_in?
+    redirect to '/' unless logged_in?
     erb :'/tickets/new_ticket'
   end
 
@@ -24,8 +24,8 @@ class TicketController < ApplicationController
         redirect to '/support_tickets'
       end
     else
-      redirect to '/'
       flash[:error] = 'ACCESS DENIED'
+      redirect to '/'
     end
   end
 
@@ -40,8 +40,8 @@ class TicketController < ApplicationController
         redirect to '/login'
       end
     else
-      redirect to '/'
       flash[:error] = 'ACCESS DENIED'
+      redirect to '/'
     end
   end
 
@@ -77,7 +77,7 @@ class TicketController < ApplicationController
       end
     else
       flash[:error] = 'You must be logged in to do that.'
-      redirect to '/login'
+      redirect to '/'
     end
   end
 
