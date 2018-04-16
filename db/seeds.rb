@@ -1,5 +1,5 @@
-User.create!(email: 'admin@admin.com',
-             password_digest: User.digest('admin'),
+User.create!(email: 'admin',
+             password_digest: User.digest('password'),
              role: 'admin')
 User.create!(email: 'needyou@tryingtowork.com',
              password_digest: User.digest('trucksRcool'),

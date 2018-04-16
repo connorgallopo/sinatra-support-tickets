@@ -1,9 +1,9 @@
-<h4>Editing Support Ticket</h4>
+<h3>Support Ticket</h3>
 <br>
-<form method="POST" action="/tickets/<%=@ticket.id%>/edit">
-  Subject:<br>
-  <input type="text" name="subject" value="<%=@ticket.subject%>"><br><br>
-  Issue:<br>
-  <textarea name="body" rows="8" cols="80"><%=@ticket.body%></textarea><br>
-  <input type="submit" value="Update Ticket">
+<h4><%=@ticket.subject%></h4>
+<p><%=@ticket.body%></p>
+<a href="/tickets/<%=@ticket.id%>/edit" id="Edit Ticket">Edit Ticket</a>
+<form style="float: right" method="post" action="/tickets/<%=@ticket.id%>/delete">
+  <input name="_method" type="hidden" value="delete">
+  <input type="submit" value="Delete Ticket">
 </form>

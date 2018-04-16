@@ -35,7 +35,7 @@ class ApplicationController < Sinatra::Base
     erb :'/tickets/new_ticket'
   end
 
-  get '/tickets/:id/edit' do
+  get '/support_tickets/:id' do
     if logged_in?
       @user = current_user
       @ticket = SupportTicket.find_by(id: params[:id])
@@ -43,12 +43,25 @@ class ApplicationController < Sinatra::Base
         erb :'/tickets/show'
       end
     else
-      flash[:error] = "You must be logged in to do that."
-      redirect to '/login'
+      flash[:error] = "ACCESS DENIED"
+      redirect to '/support_tickets'
     end
   end
 
-  post '/tickets/:id/edit' do
+  get '/support_tickets/:id/edit' do
+    if logged_in?
+      @user = current_user
+      @ticket = SupportTicket.find_by(id: params[:id])
+      if @user.role == "admin" || @ticket.user == current_user
+        erb :'/tickets/edit'
+      end
+    else
+      flash[:error] = "ACCESS DENIED"
+      redirect to '/support_tickets'
+    end
+  end
+
+  patch '/tickets/:id/edit' do
     @ticket = SupportTicket.find_by(id: params[:id])
     @ticket.update(subject: params["subject"], body: params["body"])
     flash[:message] = "Ticket sucessfully edited."
