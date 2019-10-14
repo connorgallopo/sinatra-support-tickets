@@ -12,4 +12,4 @@ default admin login is: admin@admin.com password: admin
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/<connorgallopo>/sinatra-support-tickets.
+Bug reports and pull requests are welcome on GitHub at https://github.com/connorgallopo/sinatra-support-tickets.
