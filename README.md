@@ -3,6 +3,8 @@
 
 This application allows users to create and update support tickets. It also allows an admin to review all tickets and modify them.
 
+This was created as a Sinatra Final Project for Flatiron School (learn.co)
+
 ## Installation
 
 To use this app, just clone, run rake db:migrate and then run shotgun. Everything should be set up.
